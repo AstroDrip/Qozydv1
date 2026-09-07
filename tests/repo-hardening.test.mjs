@@ -59,8 +59,8 @@ test('unused scaffold UI and its dependency surface are removed', async () => {
     assert.equal(pkg.dependencies?.[name] ?? pkg.devDependencies?.[name], undefined, `${name} should be removed`);
   }
 
-  const vite = await read('vite.config.ts');
-  assert.doesNotMatch(vite, /tailwindcss|postcss/);
+  const next = await read('next.config.ts');
+  assert.doesNotMatch(next, /tailwindcss|postcss|cloudflare|vinext/);
 });
 
 test('hover motion is pointer-aware, interruptible, and reduced-motion safe', async () => {
