@@ -26,7 +26,8 @@ function Band() {
     return value;
   },[source]);
   const [curve]=useState(() => new THREE.CatmullRomCurve3(Array.from({length:4},()=>new THREE.Vector3())));
-  const vec=useMemo(()=>new THREE.Vector3(),[]), dir=useMemo(()=>new THREE.Vector3(),[]);
+  const vecRef=useRef(new THREE.Vector3());
+  const dirRef=useRef(new THREE.Vector3());
   useRopeJoint(fixed,j1,[[0,0,0],[0,0,0],0.8]);
   useRopeJoint(j1,j2,[[0,0,0],[0,0,0],0.8]);
   useRopeJoint(j2,j3,[[0,0,0],[0,0,0],0.8]);
@@ -46,13 +47,17 @@ function Band() {
   useFrame((state)=>{
     if(!moon.current||!j3.current||!band.current) return;
     if(dragged){
+      const vec=vecRef.current;
+      const dir=dirRef.current;
       vec.set(state.pointer.x,state.pointer.y,0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       const distance=-state.camera.position.z/dir.z;
       vec.copy(state.camera.position).addScaledVector(dir,distance).sub(dragged);
-      vec.x=THREE.MathUtils.clamp(vec.x,-3.8,3.8);
-      vec.y=THREE.MathUtils.clamp(vec.y,-3.5,3.2);
-      vec.z=0;
+      vec.set(
+        THREE.MathUtils.clamp(vec.x,-3.8,3.8),
+        THREE.MathUtils.clamp(vec.y,-3.5,3.2),
+        0
+      );
       [moon,j1,j2,j3].forEach(ref=>ref.current?.wakeUp());
       moon.current.setNextKinematicTranslation(vec);
     }

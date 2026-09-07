@@ -160,7 +160,7 @@ a:focus-visible .roll>span{transform:translateY(-100%)}
 .moon-copy .moon-body{font-size:16px;line-height:1.85;color:#c6aeb8;max-width:440px;letter-spacing:0}
 .moon-spec{display:flex;gap:15px;flex-wrap:wrap;font-size:9px;color:#a76b7e;border-top:1px solid #ac526635;padding-top:25px;margin-top:40px}
 .pendant-wrap{position:relative;min-width:0;align-self:stretch;min-height:620px;display:flex;flex-direction:column}
-.pendant-canvas{height:570px;flex:1;cursor:grab;position:relative}
+.pendant-canvas{height:570px;flex:1;cursor:grab;position:relative;margin:0}
 .pendant-canvas:active{cursor:grabbing}
 .pendant-controls{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:9px;color:#ce8da1;border-top:1px solid #b34a6430;padding-top:18px}
 .pendant-controls button{border:0;background:transparent;font-size:11px;color:#f4b7c8;padding:10px;transition:color .2s ease}

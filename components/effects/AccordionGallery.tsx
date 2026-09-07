@@ -10,6 +10,7 @@ import {
   type MouseEvent,
 } from 'react';
 import { gsap } from 'gsap';
+import Image from 'next/image';
 
 import './AccordionGallery.css';
 
@@ -75,7 +76,7 @@ export default function AccordionGallery({
   className = '',
   onActiveChange = () => {},
 }: AccordionGalleryProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
   const panelRefs = useRef<Array<PanelElement | null>>([]);
   const mediaRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const barRefs = useRef<Array<HTMLSpanElement | null>>([]);
@@ -88,16 +89,12 @@ export default function AccordionGallery({
   const count = items.length;
   const safeDefault = count > 0 ? Math.min(Math.max(defaultIndex, 0), count - 1) : 0;
   const [active, setActive] = useState(safeDefault);
+  const activeIndex = count > 0 ? Math.min(active, count - 1) : 0;
   const activeRef = useRef(safeDefault);
 
   useEffect(() => {
-    if (count === 0) return;
-    setActive(current => Math.min(current, count - 1));
-  }, [count]);
-
-  useEffect(() => {
-    if (count > 0) onActiveChange(active);
-  }, [active, count, onActiveChange]);
+    if (count > 0) onActiveChange(activeIndex);
+  }, [activeIndex, count, onActiveChange]);
 
   const prefersReduced =
     typeof window !== 'undefined' &&
@@ -217,10 +214,10 @@ export default function AccordionGallery({
   }, [applyLayout, count, expandRatio, gap, vertical]);
 
   useEffect(() => {
-    activeRef.current = active;
+    activeRef.current = activeIndex;
     applyLayout(!firstRunRef.current);
     firstRunRef.current = false;
-  }, [active, applyLayout]);
+  }, [activeIndex, applyLayout]);
 
   useEffect(
     () => () => {
@@ -234,7 +231,7 @@ export default function AccordionGallery({
   };
 
   const handleClick = (index: number, event: MouseEvent<PanelElement>) => {
-    if (index !== active) {
+    if (index !== activeIndex) {
       event.preventDefault();
       setActive(index);
     }
@@ -265,15 +262,14 @@ export default function AccordionGallery({
   } as CSSProperties;
 
   return (
-    <div
+    <section
       ref={rootRef}
       className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
       style={galleryStyle}
-      role="group"
       aria-label="QOZYD concept project gallery"
     >
       {items.map((item, index) => {
-        const isActive = index === active;
+        const isActive = index === activeIndex;
         const content = (
           <>
             <span className="ag-panel__frame">
@@ -283,10 +279,13 @@ export default function AccordionGallery({
                   mediaRefs.current[index] = element;
                 }}
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.alt || item.label || ''}
-                  draggable="false"
+                  width={1254}
+                  height={1254}
+                  sizes="(max-width: 520px) 100vw, 65vw"
+                  draggable={false}
                   loading="lazy"
                 />
               </span>
@@ -353,6 +352,6 @@ export default function AccordionGallery({
           </button>
         );
       })}
-    </div>
+    </section>
   );
 }

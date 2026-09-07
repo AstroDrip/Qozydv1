@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import Image from 'next/image';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import PixelMoon from '@/components/effects/PixelMoon';
 import { Pendant, ThreadField } from '@/components/effects/Effects';
@@ -34,8 +35,8 @@ export default function Home() {
         <div className="service-card-top"><span className="eyebrow">{service.number} / {service.name.toUpperCase()}</span><span className="service-star" aria-hidden="true">✳</span></div>
         <div className="service-copy"><h3>{service.title.map(line=><span className="reveal-line" key={line}><span>{line}</span></span>)}</h3><p>{service.description}</p><ul className="tags">{service.tags.map(tag=><li key={tag}>{tag}</li>)}</ul></div>
         <div className="service-art" aria-hidden="true">
-          {index===0&&<><img src="/art/after-hours.png" alt="" loading="lazy"/><span className="art-caption">ATTENTION IS EARNED.</span></>}
-          {index===1&&<><img src="/art/glass-loop.png" alt="" loading="lazy"/><span className="system-label"><i/> SYSTEMS IN SYNC</span></>}
+          {index===0&&<><Image src="/art/after-hours.png" alt="" width={1254} height={1254} sizes="(max-width: 700px) 100vw, 50vw" loading="lazy"/><span className="art-caption">ATTENTION IS EARNED.</span></>}
+          {index===1&&<><Image src="/art/glass-loop.png" alt="" width={1254} height={1254} sizes="(max-width: 700px) 100vw, 50vw" loading="lazy"/><span className="system-label"><i/> SYSTEMS IN SYNC</span></>}
           {index===2&&<div className="browser-art"><div className="browser-bar"><span>● ● ●</span><span>YOUR NEXT CHAPTER ↗</span></div><div className="browser-content"><span>YOUR BRAND. YOUR WORLD.</span><strong>THE NEXT<br/><em>BIG THING.</em></strong><div className="browser-moon"><PixelMoon/></div><span className="browser-bottom">A DIGITAL EXPERIENCE THAT’S ENTIRELY YOU. ↗</span></div></div>}
           {index===3&&<div className="trademark-art"><span className="trademark-circle">™</span><span>OWN YOUR NAME.<br/>BUILD YOUR LEGACY.</span></div>}
         </div>
