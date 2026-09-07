@@ -1,0 +1,84 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { access, readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
+
+const root = process.cwd();
+const read = relative => readFile(path.join(root, relative), 'utf8');
+
+test('page stays server-rendered and services use a viewport-bounded thread layer', async () => {
+  const page = await read('app/page.tsx');
+  assert.doesNotMatch(page, /^['"]use client['"];?/m);
+  assert.match(page, /service-thread-viewport/);
+  assert.match(page, /<ThreadField className="service-threads"\s*\/>/);
+});
+
+test('moon rendering uses a preprocessed transparent asset instead of runtime chroma keying', async () => {
+  const pixelMoon = await read('components/effects/PixelMoon.tsx');
+  const lanyard = await read('components/effects/MoonLanyard.jsx');
+  assert.doesNotMatch(pixelMoon, /getImageData|putImageData|moonCanvas/);
+  assert.doesNotMatch(lanyard, /moonCanvas/);
+  assert.match(pixelMoon, /blood-moon-256\.png/);
+  assert.match(lanyard, /blood-moon-256\.png/);
+  const optimizedPath = path.join(root, 'public/art/blood-moon-256.png');
+  await access(optimizedPath);
+  const [source, optimized] = await Promise.all([
+    stat(path.join(root, 'public/art/blood-moon.png')),
+    stat(optimizedPath),
+  ]);
+  assert.ok(optimized.size < source.size / 4, `optimized moon should be <25% of source size (${optimized.size} vs ${source.size})`);
+});
+
+test('WebThreads caps render cost and only binds mouse listeners when interaction is enabled', async () => {
+  const threads = await read('components/effects/WebThreads.jsx');
+  assert.match(threads, /Math\.min\(window\.devicePixelRatio \|\| 1, 1\.5\)/);
+  assert.match(threads, /FRAME_INTERVAL/);
+  assert.match(threads, /if \(mouseInteraction\)/);
+});
+
+test('repository ignores generated TypeScript state, handoff archives, and worktrees', async () => {
+  const gitignore = await read('.gitignore');
+  assert.match(gitignore, /\*\.tsbuildinfo/);
+  assert.match(gitignore, /QOZYD-source-handoff\.zip/);
+  assert.match(gitignore, /\.worktrees\//);
+});
+
+test('unused scaffold UI and its dependency surface are removed', async () => {
+  const { existsSync } = await import('node:fs');
+  for (const relative of ['components/ui', 'hooks/use-mobile.ts', 'lib/utils.ts', 'components.json', '.scaffold']) {
+    assert.equal(existsSync(path.join(root, relative)), false, `${relative} should be removed`);
+  }
+
+  const pkg = JSON.parse(await read('package.json'));
+  const unused = [
+    '@base-ui/react', '@shadcn/react', 'class-variance-authority', 'clsx', 'cmdk', 'date-fns',
+    'embla-carousel-react', 'input-otp', 'react-day-picker', 'react-resizable-panels', 'recharts',
+    'shadcn', 'tailwind-merge', 'tw-animate-css', 'tailwindcss', '@tailwindcss/postcss',
+  ];
+  for (const name of unused) {
+    assert.equal(pkg.dependencies?.[name] ?? pkg.devDependencies?.[name], undefined, `${name} should be removed`);
+  }
+
+  const vite = await read('vite.config.ts');
+  assert.doesNotMatch(vite, /tailwindcss|postcss/);
+});
+
+test('hover motion is pointer-aware, interruptible, and reduced-motion safe', async () => {
+  const css = await read('app/globals.css');
+  const gallery = await read('components/effects/AccordionGallery.tsx');
+  const galleryCss = await read('components/effects/AccordionGallery.css');
+
+  assert.match(css, /@media\s*\(hover:hover\)\s*and\s*\(pointer:fine\)/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(css, /\.discipline-strip>div\s*\{animation:none\}/);
+  assert.match(gallery, /overwrite:\s*['"]auto['"]/);
+  assert.match(galleryCss, /contain:\s*layout paint/);
+});
+
+test('gallery hover does not recreate its resize observer or double-start layout animation', async () => {
+  const gallery = await read('components/effects/AccordionGallery.tsx');
+  assert.match(gallery, /const activeRef = useRef\(safeDefault\)/);
+  assert.match(gallery, /activeRef\.current = active/);
+  assert.match(gallery, /applyLayout\(false\)/);
+  assert.match(gallery, /\},\s*\[\s*count,\s*duration,/);
+});
