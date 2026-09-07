@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
+import { getSiteConfig } from '@/lib/site-config';
 import './globals.css';
+const site = getSiteConfig();
 export const metadata: Metadata = {
-  title: 'QOZYD — Good is not enough.',
-  description: 'Marketing, automation, websites, and trademark support for ambitious businesses. Your next phase starts with QOZYD.',
+  metadataBase: new URL(site.url),
+  title: { default: site.title, template: '%s | QOZYD' },
+  description: site.description,
+  applicationName: site.name,
+  robots: { index: site.indexable, follow: site.indexable },
+  openGraph: { type: 'website', locale: 'en_US', siteName: site.name, title: site.title, description: site.description },
+  twitter: { card: 'summary', title: site.title, description: site.description },
   icons: { icon: '/favicon.svg' },
 };
 export default function RootLayout({ children }: Readonly<{children: React.ReactNode}>) {

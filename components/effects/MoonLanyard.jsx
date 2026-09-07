@@ -81,6 +81,7 @@ function Band() {
       <BallCollider args={[1.02]} mass={1.5}/>
       <mesh position={[0,1.1,0]}><torusGeometry args={[0.1,0.035,8,16]}/><meshStandardMaterial color="#b87b82" metalness={0.85} roughness={0.25}/></mesh>
       <mesh
+        position={[0,0,0.04]}
         onPointerDown={e=>{
           e.stopPropagation();
           e.currentTarget.setPointerCapture(e.pointerId);
@@ -90,6 +91,9 @@ function Band() {
         onPointerCancel={releasePointer}
         onLostPointerCapture={()=>setDragged(null)}
       >
+        <planeGeometry args={[3.2,3.2]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide}/>
+      </mesh>
+      <mesh>
         <planeGeometry args={[2.2,2.2]}/><meshBasicMaterial map={texture} transparent alphaTest={0.4} side={THREE.DoubleSide} toneMapped={false}/>
       </mesh>
     </RigidBody>

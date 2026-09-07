@@ -1,10 +1,14 @@
 import type { CSSProperties } from 'react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { getSiteConfig } from '@/lib/site-config';
 import PixelMoon from '@/components/effects/PixelMoon';
 import { Pendant, ThreadField } from '@/components/effects/Effects';
 import Motion from '@/components/effects/Motion';
 import Showcase from '@/components/Showcase';
+
+export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: { url: '/' } };
 
 const services = [
   { number:'01',name:'Marketing',title:['MAKE SOME','NOISE.'],description:'The right message. In the right places. We help your brand earn attention and turn it into meaningful action.',tags:['Brand strategy','Social & content','Performance campaigns'],className:'marketing' },
@@ -16,9 +20,12 @@ const services = [
 function Roll({children}:{children:string}){return <span className="roll"><span>{children}</span><span aria-hidden="true">{children}</span></span>;}
 
 export default function Home() {
+  const site = getSiteConfig();
+  const business = { '@context': 'https://schema.org', '@type': 'Organization', name: site.name, url: site.url, description: site.description, ...(site.instagram ? { sameAs: [site.instagram] } : {}) };
   return <main id="top">
+    {site.indexable && <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(business).replace(/</g, '\\u003c')}}/>}
     <Motion/>
-    <header className="site-header"><a className="wordmark" href="#top" aria-label="QOZYD home">QOZYD<span>™</span></a><nav aria-label="Main navigation"><a href="#services"><Roll>Our universe</Roll><span>↗</span></a><a href="#work"><Roll>Selected visions</Roll><span>↗</span></a><a href="#about"><Roll>The collective</Roll><span>↗</span></a></nav><span className="header-note"><i /> Independent by nature.</span></header>
+    <header className="site-header"><a className="wordmark" href="#top" aria-label="QOZYD home">QOZYD<span>™</span></a><nav aria-label="Main navigation"><a href="#services"><Roll>Our universe</Roll><ArrowUpRight size={16} aria-hidden="true"/></a><a href="#work"><Roll>Selected visions</Roll><ArrowUpRight size={16} aria-hidden="true"/></a><a href="#about"><Roll>The collective</Roll><ArrowUpRight size={16} aria-hidden="true"/></a></nav><span className="header-note"><i /> Independent by nature.</span></header>
     <section className="hero" aria-labelledby="hero-title">
       <ThreadField className="hero-threads"/>
       <div className="hero-top"><span className="eyebrow"><i /> FOR THE ONES BUILDING WHAT’S NEXT</span><span className="edition">STRATEGY × CREATIVITY × TECHNOLOGY<br/>INDEPENDENT STUDIO / QOZYD</span></div>
@@ -37,7 +44,7 @@ export default function Home() {
         <div className="service-art" aria-hidden="true">
           {index===0&&<><Image src="/art/after-hours.png" alt="" width={1254} height={1254} sizes="(max-width: 700px) 100vw, 50vw" loading="lazy"/><span className="art-caption">ATTENTION IS EARNED.</span></>}
           {index===1&&<><Image src="/art/glass-loop.png" alt="" width={1254} height={1254} sizes="(max-width: 700px) 100vw, 50vw" loading="lazy"/><span className="system-label"><i/> SYSTEMS IN SYNC</span></>}
-          {index===2&&<div className="browser-art"><div className="browser-bar"><span>● ● ●</span><span>YOUR NEXT CHAPTER ↗</span></div><div className="browser-content"><span>YOUR BRAND. YOUR WORLD.</span><strong>THE NEXT<br/><em>BIG THING.</em></strong><div className="browser-moon"><PixelMoon/></div><span className="browser-bottom">A DIGITAL EXPERIENCE THAT’S ENTIRELY YOU. ↗</span></div></div>}
+          {index===2&&<div className="browser-art"><div className="browser-bar"><span>● ● ●</span><span>YOUR NEXT CHAPTER <ArrowUpRight size={13} aria-hidden="true"/></span></div><div className="browser-content"><span>YOUR BRAND. YOUR WORLD.</span><strong>THE NEXT<br/><em>BIG THING.</em></strong><div className="browser-moon"><PixelMoon/></div><span className="browser-bottom">A DIGITAL EXPERIENCE THAT’S ENTIRELY YOU. <ArrowUpRight size={13} aria-hidden="true"/></span></div></div>}
           {index===3&&<div className="trademark-art"><span className="trademark-circle">™</span><span>OWN YOUR NAME.<br/>BUILD YOUR LEGACY.</span></div>}
         </div>
         <span className="service-bottom-label">QOZYD / CONNECTED BY DESIGN</span>
@@ -50,6 +57,6 @@ export default function Home() {
       ['02','Connect the dots.','Strategy, design, and technology come together in a focused plan built around what you actually need.'],
       ['03','Make the move.','We build, refine, and launch. Then we help you understand what’s working and where to go next.'],
     ].map(([number,title,description])=><article key={number} data-reveal><span>{number}</span><div><h3>{title}</h3><p>{description}</p></div><ArrowUpRight aria-hidden="true"/></article>)}</div></section>
-    <footer className="site-footer"><div className="footer-top"><span className="eyebrow"><i/> YOUR NEXT PHASE STARTS HERE.</span><a href="#top"><Roll>Back to the top</Roll><ArrowUpRight size={18}/></a></div><a href="#top" className="footer-wordmark" aria-label="QOZYD, back to top">QOZYD<span>↗</span></a><div className="footer-bottom"><span>© {new Date().getFullYear()} QOZYD</span><span>STRATEGY. CREATIVE. TECHNOLOGY. TOGETHER.</span><a href="#services">Explore our universe ↗</a></div></footer>
+    <footer className="site-footer"><div className="footer-top"><span className="eyebrow"><i/> YOUR NEXT PHASE STARTS HERE.</span><a href="#top"><Roll>Back to the top</Roll><ArrowUpRight size={18}/></a></div><a href="#top" className="footer-wordmark" aria-label="QOZYD, back to top">QOZYD<ArrowUpRight className="footer-arrow" aria-hidden="true"/></a><div className="footer-bottom"><span>© {new Date().getFullYear()} QOZYD</span><span>qozyd.in@gmail.com</span><a href="#services">Explore our universe <ArrowUpRight size={14} aria-hidden="true"/></a></div></footer>
   </main>;
 }
