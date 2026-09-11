@@ -174,7 +174,7 @@ const WebThreads = ({
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 1.5)
+      dpr: Math.min(window.devicePixelRatio || 1, 1)
     });
 
     const gl = renderer.gl;

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#f4ead7"/>
+  <rect width="1200" height="92" fill="#173f05"/>
+  <text x="62" y="58" fill="#f4ead7" font-family="Arial,sans-serif" font-size="28" font-weight="700">SEMI'S KITCHEN</text>
+  <text x="62" y="190" fill="#173f05" font-family="Georgia,serif" font-size="64">Made with a little</text>
+  <text x="62" y="260" fill="#173f05" font-family="Georgia,serif" font-size="64">more love.</text>
+  <rect x="62" y="320" width="280" height="58" rx="29" fill="#d66b2f"/>
+  <text x="112" y="357" fill="#fff8ed" font-family="Arial,sans-serif" font-size="22" font-weight="700">SHOP THE MENU</text>
+  <circle cx="875" cy="420" r="205" fill="#d66b2f"/>
+  <circle cx="875" cy="420" r="152" fill="#f7c66d"/>
+  <path d="M770 430c55-90 160-90 210 0-50 70-155 70-210 0Z" fill="#8d321e"/>
+  <text x="62" y="728" fill="#173f05" font-family="Arial,sans-serif" font-size="20" letter-spacing="4">MALABAR SNACKS · BIRIYANI · CURRIES</text>
+</svg>

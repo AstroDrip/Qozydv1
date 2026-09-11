@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#050811"/>
+  <circle cx="900" cy="300" r="170" fill="#dce8ff" opacity=".9"/>
+  <circle cx="900" cy="300" r="235" fill="none" stroke="#7592d8" stroke-width="2" opacity=".55"/>
+  <circle cx="900" cy="300" r="300" fill="none" stroke="#7592d8" stroke-width="1" opacity=".35"/>
+  <text x="68" y="112" fill="#9db5ff" font-family="Arial,sans-serif" font-size="20" letter-spacing="6">QOZYD PRESENTS</text>
+  <text x="68" y="300" fill="#f4f7ff" font-family="Georgia,serif" font-size="72">START THE</text>
+  <text x="68" y="380" fill="#f4f7ff" font-family="Georgia,serif" font-size="72">JOURNEY.</text>
+  <text x="72" y="458" fill="#a7b5d7" font-family="Arial,sans-serif" font-size="21">A cinematic scroll-driven brand reveal.</text>
+  <path d="M72 585h230" stroke="#f4f7ff" stroke-width="2"/>
+  <text x="72" y="632" fill="#9db5ff" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">SCROLL TO BEGIN ↘</text>
+  <text x="68" y="744" fill="#68779f" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">MOONLIGHT · MOTION · REVEAL</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#e8efe7"/>
+  <rect width="1200" height="92" fill="#172019"/>
+  <text x="62" y="58" fill="#e8efe7" font-family="Arial,sans-serif" font-size="30" font-weight="700">QLEAVES</text>
+  <text x="62" y="196" fill="#172019" font-family="Georgia,serif" font-size="62">Bring nature</text>
+  <text x="62" y="266" fill="#172019" font-family="Georgia,serif" font-size="62">indoors.</text>
+  <text x="64" y="322" fill="#5c7260" font-family="Arial,sans-serif" font-size="22">Thoughtfully selected indoor plants in Qatar.</text>
+  <rect x="64" y="370" width="220" height="56" rx="28" fill="#66866a"/>
+  <text x="116" y="405" fill="#fff" font-family="Arial,sans-serif" font-size="20" font-weight="700">EXPLORE PLANTS</text>
+  <path d="M840 620c-30-210 35-330 180-385-22 180-73 317-180 385Z" fill="#66866a"/>
+  <path d="M840 620c-80-170-180-228-283-214 76 142 171 207 283 214Z" fill="#8eaa8b"/>
+  <path d="M840 620V268" stroke="#172019" stroke-width="12"/>
+  <text x="64" y="728" fill="#5c7260" font-family="Arial,sans-serif" font-size="20" letter-spacing="4">CALM SPACES · BETTER LIVING</text>
+</svg>

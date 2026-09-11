@@ -1,37 +1,39 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile, stat } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
 const read = relative => readFile(path.join(root, relative), 'utf8');
 
-test('page stays server-rendered and services use a viewport-bounded thread layer', async () => {
+test('page stays server-rendered and hero and services share one bounded background', async () => {
   const page = await read('app/page.tsx');
   assert.doesNotMatch(page, /^['"]use client['"];?/m);
-  assert.match(page, /service-thread-viewport/);
-  assert.match(page, /<ThreadField className="service-threads"\s*\/>/);
+  assert.match(page, /universe-viewport/);
+  assert.equal((page.match(/<ThreadField\b/g) ?? []).length, 1);
+  assert.doesNotMatch(page, /service-black-hole|service-thread-viewport/);
+  const journey = page.slice(page.indexOf('className="universe-journey"'), page.indexOf('<section id="work"'));
+  assert.match(journey, /className="hero"/);
+  assert.match(journey, /className="services cube-services"/);
 });
 
-test('moon rendering uses a preprocessed transparent asset instead of runtime chroma keying', async () => {
+test('black hole uses shared geometry with lazy rendering and a reduced-motion fallback', async () => {
   const pixelMoon = await read('components/effects/PixelMoon.tsx');
   const lanyard = await read('components/effects/MoonLanyard.jsx');
   assert.doesNotMatch(pixelMoon, /getImageData|putImageData|moonCanvas/);
   assert.doesNotMatch(lanyard, /moonCanvas/);
-  assert.match(pixelMoon, /blood-moon-256\.png/);
-  assert.match(lanyard, /blood-moon-256\.png/);
-  const optimizedPath = path.join(root, 'public/art/blood-moon-256.png');
-  await access(optimizedPath);
-  const [source, optimized] = await Promise.all([
-    stat(path.join(root, 'public/art/blood-moon.png')),
-    stat(optimizedPath),
-  ]);
-  assert.ok(optimized.size < source.size / 4, `optimized moon should be <25% of source size (${optimized.size} vs ${source.size})`);
+  assert.doesNotMatch(pixelMoon + lanyard, /blood-moon-256\.png/);
+  assert.match(pixelMoon, /prefers-reduced-motion/);
+  assert.match(pixelMoon, /IntersectionObserver/);
+  assert.match(pixelMoon, /BlackHoleFallback/);
+  const scene = await read('components/effects/BlackHoleScene.jsx');
+  assert.match(scene, /<BlackHoleModel\//);
+  assert.match(lanyard, /<BlackHoleModel\b[^>]*\/>/);
 });
 
 test('WebThreads caps render cost and only binds mouse listeners when interaction is enabled', async () => {
   const threads = await read('components/effects/WebThreads.jsx');
-  assert.match(threads, /Math\.min\(window\.devicePixelRatio \|\| 1, 1\.5\)/);
+  assert.match(threads, /Math\.min\(window\.devicePixelRatio \|\| 1, 1\)/);
   assert.match(threads, /FRAME_INTERVAL/);
   assert.match(threads, /if \(mouseInteraction\)/);
 });

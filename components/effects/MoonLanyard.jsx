@@ -1,30 +1,19 @@
 'use client';
 // Adapted from React Bits Lanyard (DavidHDev): rope joints, drag projection,
-// and a Catmull-Rom strap. The card is replaced by QOZYD's pixel moon pendant.
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+// and a Catmull-Rom strap, holding QOZYD's spinning voxel black hole.
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
+import BlackHoleModel from './BlackHoleModel';
 import { BallCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const MOON_TEXTURE = '/art/blood-moon-256.png';
 
-function Band() {
+function Band({particleSize, particleAmount}) {
   const fixed=useRef(), j1=useRef(), j2=useRef(), j3=useRef(), moon=useRef(), band=useRef();
   const [dragged,setDragged]=useState(null);
-  const source=useTexture(MOON_TEXTURE);
-  const texture=useMemo(() => {
-    const value=source.clone();
-    value.colorSpace=THREE.SRGBColorSpace;
-    value.magFilter=THREE.NearestFilter;
-    value.minFilter=THREE.NearestFilter;
-    value.generateMipmaps=false;
-    value.needsUpdate=true;
-    return value;
-  },[source]);
   const [curve]=useState(() => new THREE.CatmullRomCurve3(Array.from({length:4},()=>new THREE.Vector3())));
   const vecRef=useRef(new THREE.Vector3());
   const dirRef=useRef(new THREE.Vector3());
@@ -32,7 +21,6 @@ function Band() {
   useRopeJoint(j1,j2,[[0,0,0],[0,0,0],0.8]);
   useRopeJoint(j2,j3,[[0,0,0],[0,0,0],0.8]);
   useSphericalJoint(j3,moon,[[0,0,0],[0,1.12,0]]);
-  useEffect(()=>()=>texture.dispose(),[texture]);
   useEffect(()=>{
     const release=()=>setDragged(null);
     window.addEventListener('pointerup',release);
@@ -93,16 +81,14 @@ function Band() {
       >
         <planeGeometry args={[3.2,3.2]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide}/>
       </mesh>
-      <mesh>
-        <planeGeometry args={[2.2,2.2]}/><meshBasicMaterial map={texture} transparent alphaTest={0.4} side={THREE.DoubleSide} toneMapped={false}/>
-      </mesh>
+      <BlackHoleModel particleSize={particleSize} particleAmount={particleAmount}/>
     </RigidBody>
     <mesh ref={band}><meshLineGeometry/><meshLineMaterial color="#b92642" lineWidth={0.095} resolution={[1000,1000]} depthTest={false}/></mesh>
   </>;
 }
-export default function MoonLanyard(){
-  return <Canvas camera={{position:[0,0.6,10],fov:43}} dpr={[1,1.5]} gl={{alpha:true,antialias:true}} style={{touchAction:'pan-y'}}>
+export default function MoonLanyard({particleSize = 1, particleAmount = 1, active = true}){
+  return <Canvas frameloop={active ? 'always' : 'never'} camera={{position:[0,0.6,10],fov:43}} dpr={1} gl={{alpha:true,antialias:false}} style={{touchAction:'pan-y'}}>
     <ambientLight intensity={2}/><pointLight position={[4,4,6]} intensity={20}/>
-    <Suspense fallback={null}><Physics gravity={[0,-18,0]} timeStep={1/60}><Band/></Physics></Suspense>
+    <Suspense fallback={null}><Physics paused={!active} gravity={[0,-18,0]} timeStep={1/60}><Band particleSize={particleSize} particleAmount={particleAmount}/></Physics></Suspense>
   </Canvas>;
 }

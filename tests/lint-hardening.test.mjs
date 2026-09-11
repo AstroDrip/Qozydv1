@@ -10,7 +10,7 @@ test('lint ignores retained research sources but not application code', async ()
 });
 
 test('active image surfaces use Next Image rather than raw img tags', async () => {
-  for (const path of ['app/page.tsx', 'components/effects/PixelMoon.tsx', 'components/effects/AccordionGallery.tsx']) {
+  for (const path of ['app/page.tsx', 'components/effects/AccordionGallery.tsx']) {
     const source = await read(path);
     assert.match(source, /from ['"]next\/image['"]/);
     assert.doesNotMatch(source, /<img\b/);

@@ -19,10 +19,10 @@ test('unconfigured local builds do not advertise a fictitious public domain', ()
   assert.equal(site.indexable, false);
 });
 
-test('the stable Vercel production domain is supported without using a per-deployment URL', () => {
+test('production stays non-indexable until an explicit public site URL is configured', () => {
   const site = resolveSiteConfig({ VERCEL_PROJECT_PRODUCTION_URL: 'qozyd.example', VERCEL_URL: 'preview.example', VERCEL_ENV: 'production' });
-  assert.equal(site.url, 'https://qozyd.example');
-  assert.equal(site.indexable, true);
+  assert.equal(site.url, 'http://localhost:3000');
+  assert.equal(site.indexable, false);
 });
 
 test('invalid origins and unsafe Instagram URLs are rejected', () => {
@@ -35,4 +35,8 @@ test('invalid origins and unsafe Instagram URLs are rejected', () => {
 test('Instagram accepts only a HTTPS profile URL and normalizes it', () => {
   const site = resolveSiteConfig({ INSTAGRAM_URL:'https://www.instagram.com/qozyd_studio/?igsh=tracking' });
   assert.equal(site.instagram, 'https://www.instagram.com/qozyd_studio/');
+});
+
+test('the configured launch Instagram profile is available by default', () => {
+  assert.equal(resolveSiteConfig({}).instagram, 'https://www.instagram.com/qozyd.co/');
 });

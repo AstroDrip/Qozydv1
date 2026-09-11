@@ -266,7 +266,7 @@ export default function AccordionGallery({
       ref={rootRef}
       className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
       style={galleryStyle}
-      aria-label="QOZYD concept project gallery"
+      aria-label="QOZYD selected project gallery"
     >
       {items.map((item, index) => {
         const isActive = index === activeIndex;
@@ -287,6 +287,7 @@ export default function AccordionGallery({
                   sizes="(max-width: 520px) 100vw, 65vw"
                   draggable={false}
                   loading="lazy"
+                  unoptimized
                 />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
