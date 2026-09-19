@@ -62,23 +62,6 @@ export default function Motion() {
           );
         });
 
-        const journey = gsap.timeline({
-          scrollTrigger: {
-            trigger: '.universe-journey', start: 'top top',
-            endTrigger: '.cube-services', end: 'top top',
-            scrub: 0.25, invalidateOnRefresh: true,
-          },
-        });
-        const orbit = document.querySelector<HTMLElement>('.hero-moon');
-        journey.to('.hero-moon', {
-          // Transform the existing drawing surfaces instead of reallocating both
-          // WebGL buffers through a width/height change on every scroll frame.
-          x: () => orbit ? orbit.parentElement!.clientWidth * (window.matchMedia('(max-width: 700px)').matches ? -0.13 : -0.23) : 0,
-          y: () => orbit ? orbit.parentElement!.clientHeight * 0.5 - orbit.offsetTop - orbit.offsetHeight * 0.5 : 0,
-          scale: () => orbit ? Math.min(orbit.parentElement!.clientWidth, orbit.parentElement!.clientHeight * 1.15) / orbit.offsetWidth : 1,
-          force3D: true,
-          ease: 'none',
-        }, 0);
         gsap.to('.scroll-progress', {
           scaleX: 1,
           ease: 'none',
@@ -103,7 +86,9 @@ export default function Motion() {
             opacity:1,ease:'none',scrollTrigger:{trigger:article,start:'top 85%',end:'top 55%',scrub:0.4},
           });
         });
-        return () => { controller.abort(); clearTimeout(safety); release(); };
+        return () => {
+          controller.abort(); clearTimeout(safety); release();
+        };
       });
       media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
         const cleanups: Array<() => void> = [];

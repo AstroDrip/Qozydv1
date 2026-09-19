@@ -18,6 +18,9 @@ export default function BlackHoleScene({active = true}) {
   return (
     <Canvas
       frameloop={active ? 'always' : 'never'}
+      // CSS scales the shared backdrop. Measure layout size, not its transformed
+      // screen rectangle, and never resize the drawing surface after scrolling.
+      resize={{scroll:false,offsetSize:true,debounce:0}}
       camera={{position:[0,0.04,7.25],fov:46}}
       dpr={1}
       gl={{alpha:true,antialias:false,powerPreference:'high-performance'}}

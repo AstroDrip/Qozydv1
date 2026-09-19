@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { getSiteConfig } from '@/lib/site-config';
 import PixelMoon from '@/components/effects/PixelMoon';
-import { Pendant, ThreadField } from '@/components/effects/Effects';
+import { Pendant } from '@/components/effects/Effects';
+import BlackHoleBackdrop from '@/components/effects/BlackHoleBackdrop';
 import Motion from '@/components/effects/Motion';
 import Showcase from '@/components/Showcase';
 import ServiceCube from '@/components/ServiceCube';
@@ -28,7 +29,7 @@ export default function Home() {
     <Motion/>
     <header className="site-header"><a className="wordmark" href="#top" aria-label="QOZYD home">QOZYD<span>™</span></a><nav aria-label="Main navigation"><a href="#services"><Roll>Our universe</Roll><ArrowUpRight size={16} aria-hidden="true"/></a><a href="#work"><Roll>Selected visions</Roll><ArrowUpRight size={16} aria-hidden="true"/></a><a href="#about"><Roll>The collective</Roll><ArrowUpRight size={16} aria-hidden="true"/></a></nav></header>
     <div className="universe-journey">
-      <div className="universe-viewport" aria-hidden="true"><div className="hero-moon"><ThreadField className="hero-threads"/><PixelMoon/></div></div>
+      <BlackHoleBackdrop/>
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-top"><span className="eyebrow"><i /> FOR THE ONES BUILDING WHAT’S NEXT</span></div>
       <h1 id="hero-title"><span className="headline-mask"><span className="headline-line">GOOD IS</span></span><span className="headline-mask"><span className="headline-line">NOT <em>ENOUGH.</em></span></span></h1>

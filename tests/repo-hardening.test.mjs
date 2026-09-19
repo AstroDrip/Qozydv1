@@ -9,8 +9,11 @@ const read = relative => readFile(path.join(root, relative), 'utf8');
 test('page stays server-rendered and hero and services share one bounded background', async () => {
   const page = await read('app/page.tsx');
   assert.doesNotMatch(page, /^['"]use client['"];?/m);
-  assert.match(page, /universe-viewport/);
-  assert.equal((page.match(/<ThreadField\b/g) ?? []).length, 1);
+  const backdrop = await read('components/effects/BlackHoleBackdrop.tsx');
+  assert.match(backdrop, /universe-viewport/);
+  assert.equal((page.match(/<BlackHoleBackdrop\b/g) ?? []).length, 1);
+  assert.equal((backdrop.match(/<ThreadField\b/g) ?? []).length, 1);
+  assert.equal((backdrop.match(/<PixelMoon\b/g) ?? []).length, 1);
   assert.doesNotMatch(page, /service-black-hole|service-thread-viewport/);
   const journey = page.slice(page.indexOf('className="universe-journey"'), page.indexOf('<section id="work"'));
   assert.match(journey, /className="hero"/);
